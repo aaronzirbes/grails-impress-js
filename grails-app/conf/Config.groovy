@@ -102,3 +102,10 @@ grails.plugins.springsecurity.mock.username = 'ajz'
 grails.plugins.springsecurity.mock.load.dao = true
 grails.plugins.springsecurity.userLookup.enabled = true
 
+// CK editor plugin options
+ckeditor.upload.link.browser = false
+ckeditor.upload.link.upload = false
+ckeditor.upload.image.browser = false
+ckeditor.upload.image.upload = false
+ckeditor.upload.flash.browser = false
+ckeditor.upload.flash.upload = false

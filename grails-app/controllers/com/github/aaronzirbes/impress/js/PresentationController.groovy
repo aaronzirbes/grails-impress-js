@@ -81,7 +81,7 @@ class PresentationController {
         }
 
 		flash.message = message(code: 'default.updated.message', args: [message(code: 'presentation.label', default: 'Presentation'), presentationInstance.id])
-        redirect(action: "show", id: presentationInstance.id)
+        redirect(action: "edit", id: presentationInstance.id)
     }
 
     def delete() {
@@ -99,7 +99,7 @@ class PresentationController {
         }
         catch (DataIntegrityViolationException e) {
 			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'presentation.label', default: 'Presentation'), params.id])
-            redirect(action: "show", id: params.id)
+            redirect(action: "edit", id: params.id)
         }
     }
 }

@@ -593,6 +593,18 @@ th:hover, tr:hover {
 	text-decoration: underline;
 }
 
+.slide-title label {
+	color: #48802C;
+	font-weight: bold;
+}
+.slide-title {
+	margin-bottom: 1em;
+}
+.slide-title input[type='text'] {
+	width: 100%;
+	margin-right: 1px;
+}
+
 .no-borderradius .buttons input:hover, .no-borderradius .buttons input:focus,
 .no-borderradius .buttons a:hover, .no-borderradius .buttons a:focus {
 	background-color: transparent;

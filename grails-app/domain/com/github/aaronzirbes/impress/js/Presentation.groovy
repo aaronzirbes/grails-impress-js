@@ -18,7 +18,8 @@ class Presentation {
 		if (this.previewSlide) {
 			return this.previewSlide.content
 		} else if (slides.size() > 0) {
-			return this.slides[0].content
+			def firstSlide = this.slides.sort{ it.sortOrder }.getAt(0)
+			return firstSlide?.content
 		} else {
 			return '<h2>N/A</h2>'
 		}

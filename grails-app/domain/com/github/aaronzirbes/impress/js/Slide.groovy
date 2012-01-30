@@ -3,12 +3,8 @@ package com.github.aaronzirbes.impress.js
 class Slide {
 
 	String title = "New Slide"
-	String content = """<p>Lorem ipsum dolor sit amet, consectetur 
-adipiscing elit. Vestibulum placerat pretium dictum. Vivamus 
-quis euismod urna. Sed ut nibh eget purus dignissim aliquet. 
-Proin sodales tempus nulla vel faucibus. Pellentesque habitant morbi 
-tristique senectus et netus et malesuada fames ac turpis egestas</p>"""
-	Integer sortOrder = 1
+	String content = """<p>Lorem ipsum dolor sit amet</p>"""
+	Integer sortOrder = 0
 	Integer positionX = 0
 	Integer positionY = 0
 	Integer positionZ = 0
@@ -22,7 +18,7 @@ tristique senectus et netus et malesuada fames ac turpis egestas</p>"""
 	static belongsTo = [ presentation : Presentation ]
 
     static constraints = {
-		sortOrder unique: 'presentation'
+		sortOrder unique: 'presentation', range:1..254
     }
 
 	static mapping = {

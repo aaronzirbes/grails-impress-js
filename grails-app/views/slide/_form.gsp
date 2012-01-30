@@ -1,17 +1,18 @@
 <%@ page import="com.github.aaronzirbes.impress.js.Slide" %>
 
-<div class="${hasErrors(bean: slideInstance, field: 'title', 'error')} ">
+<div class="slide-title ${hasErrors(bean: slideInstance, field: 'title', 'error')} ">
 	<label for="title">
-		<g:message code="slide.title.label" default="Title" />
-	</label><br/>
-	<g:textField size="30" name="title" value="${slideInstance?.title}"/>
+		<g:message code="slide.title.label" default="Title" /><br/>
+	</label>
+	<g:textField name="title" value="${slideInstance?.title}"/>
 </div>
 
+<ckeditor:config height="300px" width="100%" />
+
 <div class="${hasErrors(bean: slideInstance, field: 'content', 'error')} ">
-	<label for="content">
-		<g:message code="slide.content.label" default="Content" />
-	</label><br/>
-	<g:textArea style="width:640px;height:480px;" name="content" value="${slideInstance?.content}"/>
+	<ckeditor:editor name="content">
+	${slideInstance?.content}
+	</ckeditor:editor>
 </div>
 
 <h:hiddenField name="presentation.id" value="${slideInstance?.presentation?.id}" />

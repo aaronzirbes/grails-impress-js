@@ -7,15 +7,17 @@ import com.github.aaronzirbes.impress.js.Slide
 class BootStrap {
 
 	def init = { servletContext ->
+
+		def adminRole = Role.findOrSaveByAuthority('ROLE_ADMIN')
+		def userRole = Role.findOrSaveByAuthority('ROLE_USER')
+		def ajz = User.findByUsername('ajz@umn.edu')
+		if (! ajz) {
+			ajz = new User(username: 'ajz@umn.edu', enabled: true, password: 'password').save(flush:true)
+			UserRole.create ajz, adminRole, true
+		}
+
 		environments {
 			development {
-				def adminRole = new Role(authority: 'ROLE_ADMIN').save(flush: true)
-				def userRole = new Role(authority: 'ROLE_USER').save(flush: true)
-
-				def ajz = new User(username: 'ajz@umn.edu', enabled: true, password: 'password')
-				ajz.save(flush: true)
-
-				UserRole.create ajz, adminRole, true
 
 				assert User.count() == 1
 				assert Role.count() == 2

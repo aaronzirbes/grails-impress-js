@@ -5,6 +5,7 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'slide.label', default: 'Slide')}" />
 		<title><g:message code="default.edit.label" args="[entityName]" /></title>
+		<ckeditor:resources />
 	</head>
 	<body>
 		<a href="#edit-slide" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
@@ -19,7 +20,9 @@
 				<g:if test="${nextSlideInstance}">
 				<li><g:link class="edit" action="edit" id="${nextSlideInstance?.id}"><g:message code="default.button.nextSlide.label" default="Next Slide" /></g:link></li>
 				</g:if>
-
+				<g:else>
+				<li><g:link class="create" controller="slide" action="create" params="['presentation.id': slideInstance?.presentation?.id]">${message(code: 'default.add.label', args: [message(code: 'slide.label', default: 'Slide')])}</g:link></li>
+				</g:else>
 			</ul>
 		</div>
 		<div id="edit-slide" class="content scaffold-edit" role="main">

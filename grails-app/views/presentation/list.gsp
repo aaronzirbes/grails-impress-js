@@ -31,7 +31,7 @@
 				<tbody>
 				<g:each in="${presentationInstanceList}" status="i" var="presentationInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-						<td class="slide-preview">${presentationInstance?.previewSlide?.content}</td>
+						<td class="slide-preview">${presentationInstance?.preview}</td>
 						<td>
 							<h2>${fieldValue(bean: presentationInstance, field: "title")}</h2>
 							<p>${fieldValue(bean: presentationInstance, field: "description")}</p>

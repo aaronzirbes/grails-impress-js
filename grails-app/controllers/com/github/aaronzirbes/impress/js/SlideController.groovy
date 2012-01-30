@@ -16,18 +16,55 @@ class SlideController {
     }
 
     def create() {
-        [slideInstance: new Slide(params)]
-    }
-
-    def save() {
         def slideInstance = new Slide(params)
-        if (!slideInstance.save(flush: true)) {
-            render(view: "create", model: [slideInstance: slideInstance])
-            return
-        }
+		if (slideInstance.presentation && slideInstance.sortOrder == 0) {
+			def presentation = slideInstance.presentation
+			if (! presentation.slides) {
+				slideInstance.sortOrder = 1
+			} else {
+				def random = new Random()
+				// increment max sort order
+				def lastSlide = presentation.slides.sort{it.sortOrder * -1}.getAt(0)
+				slideInstance.sortOrder = lastSlide.sortOrder + 1
 
-		flash.message = message(code: 'default.created.message', args: [message(code: 'slide.label', default: 'Slide'), slideInstance.id])
-        redirect(action: "show", id: slideInstance.id)
+				// Pull last position
+				slideInstance.positionX = lastSlide.positionX
+				slideInstance.positionY = lastSlide.positionY
+				slideInstance.positionZ = lastSlide.positionZ
+
+				// pull last rotation settings
+				slideInstance.rotationX = lastSlide.rotationX
+				slideInstance.rotationY = lastSlide.rotationY
+				slideInstance.rotationZ = lastSlide.rotationZ
+
+				// Jiggle it a little bit
+				def rotation = random.nextInt(20) - 10
+				slideInstance.rotationZ = slideInstance.rotationZ + rotation
+
+				// Randomly Move around
+				def done = false
+				while ( ! done) {
+					def direction = random.nextInt(4)
+					if (direction == 0) { slideInstance.positionX = slideInstance.positionX + 1000 }
+					else if (direction == 1) { slideInstance.positionY = slideInstance.positionY + 1000 }
+					else if (direction == 2) { slideInstance.positionY = slideInstance.positionY - 1000 }
+					else if (direction == 3) { slideInstance.positionX = slideInstance.positionX - 1000 }
+
+					def existingSlide = Slide.findWhere(positionX: slideInstance.positionX, positionZ: slideInstance.positionY)
+					if (! existingSlide) { done = true }
+				}
+			}
+		}
+
+		if (slideInstance.save(flush:true)) {
+			slideInstance.refresh()
+			redirect(action:'edit', id: slideInstance.id)
+			return
+		} else {
+			flash.message = message(code: 'default.created.message', args: [message(code: 'slide.label', default: 'Slide'), slideInstance.id])
+            redirect(controller:presentation, action: "list")
+            return
+		}
     }
 
     def show() {
@@ -91,11 +128,11 @@ class SlideController {
             redirect(action: "list")
             return
         }
-
+		def presentationInstance = slideInstance.presentation
         try {
             slideInstance.delete(flush: true)
 			flash.message = message(code: 'default.deleted.message', args: [message(code: 'slide.label', default: 'Slide'), params.id])
-            redirect(action: "list")
+            redirect(controller: "presentation", action: "edit", id: presentationInstance?.id)
         }
         catch (DataIntegrityViolationException e) {
 			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'slide.label', default: 'Slide'), params.id])
